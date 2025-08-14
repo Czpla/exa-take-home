@@ -8,7 +8,7 @@ import { firstValueFrom } from 'rxjs';
 export class SendNotification implements SendNotificationUseCase {
   constructor(private readonly _client: ClientProxy) {}
 
-  public async send(input: SendNotificationUseCase.Input): Promise<void> {
+  public async execute(input: SendNotificationUseCase.Input): Promise<void> {
     const notification = new Notification({
       id: crypto.randomUUID(),
       userId: input.userId,

@@ -19,6 +19,17 @@ export class Notification {
     this.updatedAt = input.updatedAt;
     this.status = NotificationStatus.PENDING;
   }
+
+  public static fromJSON(input: Record<string, any>): Notification {
+    return new Notification({
+      id: input.id,
+      userId: input.userId,
+      message: input.message,
+      type: input.type,
+      createdAt: input.createdAt,
+      updatedAt: input.updatedAt,
+    });
+  }
 }
 
 export namespace Notification {

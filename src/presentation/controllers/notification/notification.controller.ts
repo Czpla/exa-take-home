@@ -10,7 +10,7 @@ export class NotificationController {
   @Post()
   @UsePipes(new ZodValidationPipe(SendInputSchema))
   public async send(@Body() body: SendInputDto): Promise<void> {
-    return this._sendNotificationUseCase.send({
+    return this._sendNotificationUseCase.execute({
       userId: body.userId,
       message: body.message,
       type: body.type,
