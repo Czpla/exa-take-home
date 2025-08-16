@@ -14,4 +14,8 @@ export class Environment {
   public get rabbitmqUrl(): string {
     return this.config.get<string>('RABBITMQ_URL', 'amqp://rabbitmq:rabbitmq@localhost:5672');
   }
+
+  public get rabbitmqQueueEvents(): string {
+    return this.config.get<string>('RABBITMQ_QUEUE_EVENTS', 'my_queue');
+  }
 }

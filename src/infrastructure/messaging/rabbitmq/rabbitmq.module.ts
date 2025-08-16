@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { RabbitMQService } from './rabbitmq.service';
+import { RabbitMQService } from '@/infrastructure/messaging/rabbitmq/rabbitmq.service';
 
 @Global()
 @Module({

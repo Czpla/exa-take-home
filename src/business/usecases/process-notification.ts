@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ProcessNotificationUseCase } from '@/domain/usecases/process-notification.usecase';
-import { PrismaNotificationRepository } from '@/infrastructure/database/prisma/repositories/prisma-notification.reporitory';
-import { NotificationStatus } from '@/domain/enums/notification-status.enum';
+import { NotificationRepository } from '@/domain/repositories/notification.repository';
 
 @Injectable()
 export class ProcessNotification implements ProcessNotificationUseCase {
-    constructor(private readonly _prismaNotificationRepository: PrismaNotificationRepository) {}
+  constructor(private readonly _notificationRepository: NotificationRepository) {}
 
-    public async execute(input: ProcessNotificationUseCase.Input): Promise<ProcessNotificationUseCase.Output> {
-        await this._prismaNotificationRepository.updateStatus({
-            id: input.id,
-            status: NotificationStatus.PROCESSED
-        });
-
-        console.log(`Notification ${ input.id } processed for user ${ input.userId } successfully.`);
-    }
+  public async execute(input: ProcessNotificationUseCase.Input): Promise<ProcessNotificationUseCase.Output> {
+    await this._notificationRepository.updateStatus({
+      id: input.notification.id,
+      status: input.status,
+    });
+  }
 }

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Environment } from '@/main/config/environment/environment.config';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@/infrastructure/database/prisma/prisma.module';
 import { NotificationModule } from '@/presentation/controllers/notification/notification.module';
 import { RabbitMQModule } from '@/infrastructure/messaging/rabbitmq/rabbitmq.module';

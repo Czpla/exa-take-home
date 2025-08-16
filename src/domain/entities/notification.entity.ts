@@ -5,10 +5,10 @@ export class Notification {
   public readonly id: string;
   public readonly userId: string;
   public readonly message: string;
+  public readonly status: NotificationStatus | null;
   public readonly type: NotificationType;
   public readonly createdAt?: Date = new Date();
   public readonly updatedAt?: Date;
-  public status: NotificationStatus;
 
   constructor(input: Notification.Input) {
     this.id = input.id;
@@ -17,7 +17,7 @@ export class Notification {
     this.type = input.type;
     this.createdAt = input.createdAt;
     this.updatedAt = input.updatedAt;
-    this.status = NotificationStatus.PENDING;
+    this.status = input.status ?? NotificationStatus.PENDING;
   }
 
   public static fromJSON(input: Record<string, any>): Notification {
@@ -25,6 +25,7 @@ export class Notification {
       id: input.id,
       userId: input.userId,
       message: input.message,
+      status: input.status,
       type: input.type,
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
@@ -37,6 +38,7 @@ export namespace Notification {
     id: string;
     userId: string;
     message: string;
+    status: NotificationStatus | null;
     type: NotificationType;
     createdAt?: Date;
     updatedAt?: Date;
