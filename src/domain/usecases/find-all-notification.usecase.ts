@@ -1,9 +1,9 @@
-import { Notification } from '@/domain/entities/notification.entity';
+import { Payment } from '@/domain/entities/payment.entity';
 
 export abstract class FindAllNotificationUseCase {
   abstract execute(): Promise<FindAllNotificationUseCase.Output>;
 }
 
 export namespace FindAllNotificationUseCase {
-  export type Output = Notification[] | null;
+  export type Output = Payment[] | null;
 }

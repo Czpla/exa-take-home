@@ -7,24 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Notification {
-  id        String             @id @default(uuid())
-  userId    String
-  message   String
-  type      NotificationMessage
-  status    NotificationStatus @default(pending)
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
 }
 
-enum NotificationStatus {
-  pending
-  processed
-  failed
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAIL
 }
 
-enum NotificationMessage {
-  email
-  sms
-  push
+model Payment {
+  id             String         @id @default(uuid())
+  cpf            String
+  description    String
+  amount         Decimal        @db.Decimal(12, 2)
+  paymentMethod  PaymentMethod
+  status         PaymentStatus
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 }

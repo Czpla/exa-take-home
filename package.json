@@ -1,7 +1,7 @@
 {
-  "name": "x5-take-home",
+  "name": "exa-take-home",
   "version": "0.0.1",
-  "description": "Project for X5 Take Home",
+  "description": "Project for Exa Take Home",
   "author": "Eduardo Czpla",
   "private": true,
   "license": "UNLICENSED",
@@ -27,15 +27,11 @@
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.14.0",
-    "amqp-connection-manager": "^4.1.14",
-    "amqplib": "^0.10.8",
     "dotenv": "^17.2.1",
     "nestjs-zod": "^4.3.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
     "zod": "^3.24.3"
   },
   "devDependencies": {
@@ -44,7 +40,6 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
-    "@types/amqplib": "^0.10.7",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",

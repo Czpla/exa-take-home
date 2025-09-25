@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from '@/infrastructure/database/prisma/prisma.module';
-import { NotificationModule } from '@/presentation/controllers/notification/notification.module';
-import { RabbitMQModule } from '@/infrastructure/messaging/rabbitmq/rabbitmq.module';
+import { PaymentModule } from '@/presentation/controllers/payment/payment.module';
 import { EnvironmentModule } from '@/main/config/environment/environment.module';
 
 @Module({
@@ -12,8 +11,7 @@ import { EnvironmentModule } from '@/main/config/environment/environment.module'
     }),
     EnvironmentModule,
     PrismaModule,
-    RabbitMQModule,
-    NotificationModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}
