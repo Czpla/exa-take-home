@@ -8,6 +8,14 @@ import { UpdatePaymentUseCase } from '@/domain/usecases/update-payment.usecase';
 import { UpdatePayment } from '@/business/usecases/update-payment';
 import { FindPaymentById } from '@/business/usecases/find-payment-by-id';
 import { FindPaymentByIdUseCase } from '@/domain/usecases/find-payment-by-id.usecase';
+import { PaymentGateway } from '@/domain/gateways/payment.gateway';
+import { MercadoPagoGateway } from '@/infrastructure/gateways/payments/mercado-pago/mercado-pago.gateway';
+import { GetPaymentStrategyFactory } from '@/domain/factories/get-payment-strategy.factory';
+import { GetPaymentStrategy } from '@/business/factories/get-payment-strategy';
+import { CreditCardStrategy } from '@/business/strategies/credit-card.strategy';
+import { PixStrategy } from '@/business/strategies/pix.strategy';
+import { ListPaymentsPaginatedUseCase } from '@/domain/usecases/list-payments-paginated.usecase';
+import { ListPaymentsPaginated } from '@/business/usecases/list-payments-paginated';
 
 @Module({
   providers: [
@@ -27,6 +35,20 @@ import { FindPaymentByIdUseCase } from '@/domain/usecases/find-payment-by-id.use
       provide: FindPaymentByIdUseCase,
       useClass: FindPaymentById,
     },
+    {
+      provide: PaymentGateway,
+      useClass: MercadoPagoGateway,
+    },
+    {
+      provide: GetPaymentStrategyFactory,
+      useClass: GetPaymentStrategy,
+    },
+    {
+      provide: ListPaymentsPaginatedUseCase,
+      useClass: ListPaymentsPaginated,
+    },
+    PixStrategy,
+    CreditCardStrategy,
   ],
   controllers: [PaymentController],
 })

@@ -1,5 +1,4 @@
 import { PaymentMethod } from '@/domain/enums/payment-method.enum';
-import { Payment } from '@/domain/entities/payment.entity';
 
 export abstract class CreatePaymentUseCase {
   abstract execute(input: CreatePaymentUseCase.Input): Promise<CreatePaymentUseCase.Output>;
@@ -13,5 +12,8 @@ export namespace CreatePaymentUseCase {
     paymentMethod: PaymentMethod;
   };
 
-  export type Output = Payment;
+  export type Output = {
+    id: string | null;
+    paymentLink: string | null;
+  };
 }

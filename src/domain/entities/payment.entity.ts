@@ -34,6 +34,22 @@ export class Payment {
       updatedAt: input.updatedAt,
     });
   }
+
+  public static create(input: Payment.Input): Payment {
+    if (input.amount <= 0) {
+      throw new Error('Amount must be greater than zero.');
+    }
+
+    if (input.cpf.length < 11 || input.cpf.length > 14) {
+      throw new Error('CPF must be between 11 and 14 characters.');
+    }
+
+    if (input.description.length < 5 || input.description.length > 100) {
+      throw new Error('Description must be between 5 and 100 characters.');
+    }
+
+    return new Payment(input);
+  }
 }
 
 export namespace Payment {

@@ -1,16 +1,19 @@
-import { Controller, Post, Body, UsePipes, Param, Patch, Get } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, Param, Patch, Get, Query } from '@nestjs/common';
 import {
   CreatePaymentInputDto,
-  CreatePaymentInputSchema,
+  createPaymentInputSchema,
   CreatePaymentOutputDto,
   UpdatePaymentInputDto,
-  UpdatePaymentInputSchema,
+  ListPaymentPaginatedInputDto,
+  listPaymentPaginatedInputSchema,
+  ListPaymentPaginatedOutputDto,
 } from '@/presentation/controllers/payment/dtos';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { CreatePaymentUseCase } from '@/domain/usecases/create-payment.usecase';
 import { UpdatePaymentUseCase } from '@/domain/usecases/update-payment.usecase';
-import { FindPaymentByIdOutputDto } from './dtos/find-payment-by-id';
+import { FindPaymentByIdOutputDto } from '@/presentation/controllers/payment/dtos/find-payment-by-id.dto';
 import { FindPaymentByIdUseCase } from '@/domain/usecases/find-payment-by-id.usecase';
+import { ListPaymentsPaginatedUseCase } from '@/domain/usecases/list-payments-paginated.usecase';
 
 @Controller('payment')
 export class PaymentController {
@@ -18,19 +21,18 @@ export class PaymentController {
     private readonly _createPaymentUseCase: CreatePaymentUseCase,
     private readonly _updatePaymentUseCase: UpdatePaymentUseCase,
     private readonly _findPaymentByIdUseCase: FindPaymentByIdUseCase,
+    private readonly _listPaymentsPaginated: ListPaymentsPaginatedUseCase,
   ) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(CreatePaymentInputSchema))
+  @UsePipes(new ZodValidationPipe(createPaymentInputSchema))
   public async send(@Body() body: CreatePaymentInputDto): Promise<CreatePaymentOutputDto> {
-    const payment = await this._createPaymentUseCase.execute({
+    return await this._createPaymentUseCase.execute({
       cpf: body.cpf,
       description: body.description,
       amount: body.amount,
       paymentMethod: body.paymentMethod,
     });
-
-    return CreatePaymentOutputDto.fromEntity(payment);
   }
 
   @Patch(':id')
@@ -42,17 +44,6 @@ export class PaymentController {
     });
   }
 
-  // @Get()
-  // public async findAll(): Promise<FindAllOutputDto[] | null> {
-  //   const notifications = await this._findAllNotificationUseCase.execute();
-
-  //   if (!notifications) {
-  //     return null;
-  //   }
-
-  //   return notifications.map((notification) => FindAllOutputDto.fromEntity(notification));
-  // }
-
   @Get(':id')
   public async findById(@Param('id') id: string): Promise<FindPaymentByIdOutputDto | null> {
     const payment = await this._findPaymentByIdUseCase.execute({ id: id });
@@ -60,14 +51,22 @@ export class PaymentController {
     return FindPaymentByIdOutputDto.fromEntity(payment);
   }
 
-  // @Get('status/:id')
-  // public async checkStatus(@Param('id') id: string): Promise<CheckStatusOutputDto | null> {
-  //   const notificationStatus = await this._checkStatusNotificationUseCase.execute({ id: id });
+  @Get()
+  @UsePipes(new ZodValidationPipe(listPaymentPaginatedInputSchema))
+  public async listPaginated(
+    @Query() query: ListPaymentPaginatedInputDto,
+  ): Promise<ListPaymentPaginatedOutputDto[] | null> {
+    const payments = await this._listPaymentsPaginated.execute({
+      cpf: query.cpf,
+      paymentMethod: query.paymentMethod,
+      skip: query.skip,
+      take: query.take,
+    });
 
-  //   if (!notificationStatus) {
-  //     throw new NotFoundException(`Notification with id ${id} not found.`);
-  //   }
+    if (!payments) {
+      return null;
+    }
 
-  //   return CheckStatusOutputDto.fromStatus(notificationStatus);
-  // }
+    return payments.map((payment) => ListPaymentPaginatedOutputDto.fromEntity(payment));
+  }
 }

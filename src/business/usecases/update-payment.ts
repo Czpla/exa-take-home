@@ -1,4 +1,3 @@
-import { Payment } from '@/domain/entities/payment.entity';
 import { PaymentRepository } from '@/domain/repositories/payment.repository';
 import { UpdatePaymentUseCase } from '@/domain/usecases/update-payment.usecase';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -13,17 +12,6 @@ export class UpdatePayment implements UpdatePaymentUseCase {
     if (!payment) {
       throw new NotFoundException('Payment not found.');
     }
-
-    // const paymentEntity = new Payment({
-    //   id: payment.id,
-    //   cpf: payment.cpf,
-    //   description: payment.description,
-    //   amount: payment.amount,
-    //   paymentMethod: payment.paymentMethod,
-    //   status: input.status,
-    //   createdAt: payment.createdAt,
-    //   updatedAt: new Date(),
-    // });
 
     await this._paymentRepository.update({
       id: payment.id,

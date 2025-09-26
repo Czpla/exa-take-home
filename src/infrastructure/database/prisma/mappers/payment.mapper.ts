@@ -21,6 +21,8 @@ export class PaymentMapper {
   public static toPrisma<T extends PrismaDataInput>(payment: Partial<Payment>): T {
     const data: Partial<T> = {};
 
+    if (payment.id) data.id = payment.id;
+
     if (payment.cpf) data.cpf = payment.cpf;
     if (payment.description) data.description = payment.description;
 
@@ -50,31 +52,31 @@ export class PaymentMapper {
     });
   }
 
-  private static toDomainPaymentMethod(method: PaymentMethod): DomainPaymentMethod {
+  public static toDomainPaymentMethod(method: PaymentMethod): DomainPaymentMethod {
     const domainMethod = Object.keys(domainToPrismaMethodMap).find(
       (key) => domainToPrismaMethodMap[key as DomainPaymentMethod] === method,
     );
 
     if (!domainMethod) {
-      throw new Error(`Prisma method ${method} not mapped to Domain.`);
+      throw new BadRequestException(`Prisma method ${method} not mapped to Domain.`);
     }
 
     return domainMethod as DomainPaymentMethod;
   }
 
-  private static toDomainPaymentStatus(status: PaymentStatus): DomainPaymentStatus {
+  public static toDomainPaymentStatus(status: PaymentStatus): DomainPaymentStatus {
     const domainStatus = Object.keys(domainToPrismaStatusMap).find(
       (key) => domainToPrismaStatusMap[key as DomainPaymentStatus] === status,
     );
 
     if (!domainStatus) {
-      throw new Error(`Prisma status ${status} not mapped to Domain.`);
+      throw new BadRequestException(`Prisma status ${status} not mapped to Domain.`);
     }
 
     return domainStatus as DomainPaymentStatus;
   }
 
-  private static toPrismaPaymentMethod(method: DomainPaymentMethod): PaymentMethod {
+  public static toPrismaPaymentMethod(method: DomainPaymentMethod): PaymentMethod {
     const prismaMethod = domainToPrismaMethodMap[method];
 
     if (!prismaMethod) {
@@ -84,7 +86,7 @@ export class PaymentMapper {
     return prismaMethod;
   }
 
-  private static toPrismaPaymentStatus(status: DomainPaymentStatus): PaymentStatus {
+  public static toPrismaPaymentStatus(status: DomainPaymentStatus): PaymentStatus {
     const prismaStatus = domainToPrismaStatusMap[status];
 
     if (!prismaStatus) {
